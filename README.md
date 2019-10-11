@@ -3,10 +3,39 @@ L2CacheUtilities is an open source caching library that contains basic usages an
 
 
 
+## Nuget Packages
+
+| Package Name |  Version | Downloads
+|--------------|  ------- | ----
+| FH.Cache.Core | ![](https://img.shields.io/nuget/v/FH.Cache.Core.svg) | ![](https://img.shields.io/nuget/dt/FH.Cache.Core.svg)
+| FH.Cache.Redis | ![](https://img.shields.io/nuget/v/FH.Cache.Redis.svg) | ![](https://img.shields.io/nuget/dt/FH.Cache.Redis.svg)
+| FH.Cache.Serialization.MessagePack | ![](https://img.shields.io/nuget/v/FH.Cache.Serialization.MessagePack.svg) | ![](https://img.shields.io/nuget/dt/FH.Cache.Serialization.MessagePack.svg)
+| FH.Cache.Serialization.Json | ![](https://img.shields.io/nuget/v/FH.Cache.Serialization.Json.svg) | ![](https://img.shields.io/nuget/dt/FH.Cache.Serialization.Json.svg)
+| FH.Cache.Serialization.Protobuf | ![](https://img.shields.io/nuget/v/FH.Cache.Serialization.Protobuf.svg) | ![](https://img.shields.io/nuget/dt/FH.Cache.Serialization.Protobuf.svg)
 
 ## Basic Usages 
 
-### Step 1 : Configure appsettings.json
+### Step 1 : Install the package
+
+Choose caching provider that you need and install it via Nuget.
+
+```
+Install-Package FH.Cache.Core
+Install-Package FH.Cache.Redis
+FH.Cache.Serialization.MessagePack
+FH.Cache.Serialization.Json
+FH.Cache.Serialization.Protobuf
+```
+OR
+```
+<PackageReference Include="FH.Cache.Core" Version="0.0.1" />
+<PackageReference Include="FH.Cache.Redis" Version="0.0.1" />
+<PackageReference Include="FH.Cache.Serialization.MessagePack" Version="0.0.1" />
+<PackageReference Include="FH.Cache.Serialization.Json" Version="0.0.1" />
+<PackageReference Include="FH.Cache.Serialization.Protobuf" Version="0.0.1" />
+```
+
+### Step 2 : Configure appsettings.json
 
 ```json
 
@@ -45,7 +74,7 @@ L2CacheUtilities is an open source caching library that contains basic usages an
   }
   ```
 
-### Step 2 : Configure Startup class
+### Step 3 : Configure Startup class
 
 L2CacheUtilities provider has it's own configuration options.
 
@@ -67,7 +96,7 @@ public class Startup
 }
 ```
 
-###  Step 3 : Write code in your controller 
+###  Step 4 : Write code in your controller 
 
 ```csharp
 public class HomeController : Controller
@@ -84,7 +113,7 @@ public class HomeController : Controller
             _memoryProvider = _providerFactory.GetCachingProvider(CachingConstValue.DefaultInMemoryName);
             _redisProvider = _providerFactory.GetCachingProvider(CachingConstValue.DefaultRedisName);
         }
-        #region ƒ⁄¥Ê≤‚ ‘
+        #region Memory Test
         public IActionResult Memory()
         {
             DefaultInMemoryCachingProvider cache = (DefaultInMemoryCachingProvider)_memoryProvider;
@@ -112,7 +141,7 @@ public class HomeController : Controller
             return Content("Success");
         }
         #endregion
-        #region Redis≤‚ ‘
+        #region Redis Test
 
         public IActionResult RedisGet(string key)
         {
@@ -136,7 +165,7 @@ public class HomeController : Controller
             return Content("Success");
         }
         #endregion
-        #region L2≤‚ ‘
+        #region L2 Test
 
         public IActionResult L2Get(string key)
         {
