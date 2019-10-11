@@ -22,9 +22,9 @@ Choose caching provider that you need and install it via Nuget.
 ```
 Install-Package FH.Cache.Core
 Install-Package FH.Cache.Redis
-FH.Cache.Serialization.MessagePack
-FH.Cache.Serialization.Json
-FH.Cache.Serialization.Protobuf
+Install-Package FH.Cache.Serialization.MessagePack
+Install-Package FH.Cache.Serialization.Json
+Install-Package FH.Cache.Serialization.Protobuf
 ```
 OR
 ```
