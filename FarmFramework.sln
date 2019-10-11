@@ -13,19 +13,20 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FH.Cache.Redis", "src\FH.Ca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FH.Cache.Serialization.MessagePack", "src\FH.Cache.Serialization.MessagePack\FH.Cache.Serialization.MessagePack.csproj", "{0329C665-1E07-416C-9097-223DD6F241E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FH.Cache.Serialization.Json", "src\FH.Cache.Serialization.Json\FH.Cache.Serialization.Json.csproj", "{C69C4FA2-2FEE-450F-9F72-EA747CD26C1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FH.Cache.Serialization.Json", "src\FH.Cache.Serialization.Json\FH.Cache.Serialization.Json.csproj", "{C69C4FA2-2FEE-450F-9F72-EA747CD26C1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FH.Cache.Serialization.Protobuf", "src\FH.Cache.Serialization.Protobuf\FH.Cache.Serialization.Protobuf.csproj", "{8BF0C1E1-5D36-4FAE-8728-5FB1E53268CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FH.Cache.Serialization.Protobuf", "src\FH.Cache.Serialization.Protobuf\FH.Cache.Serialization.Protobuf.csproj", "{8BF0C1E1-5D36-4FAE-8728-5FB1E53268CB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{9A712A6F-A04F-44F6-AD04-6B5E77817EED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FH.WebApp", "sample\FH.WebApp\FH.WebApp.csproj", "{4F863ED1-9D71-4727-9039-EA2789C08639}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FH.WebApp", "sample\FH.WebApp\FH.WebApp.csproj", "{4F863ED1-9D71-4727-9039-EA2789C08639}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FH.CacheTest", "test\FH.CacheTest\FH.CacheTest.csproj", "{65C05C69-819A-4284-A37D-DDD467E27663}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{8F9A01EE-DF2B-4130-A1CB-5D98AF856F29}"
 	ProjectSection(SolutionItems) = preProject
 		LICENSE.js = LICENSE.js
+		logo.png = logo.png
 		README.md = README.md
 	EndProjectSection
 EndProject
