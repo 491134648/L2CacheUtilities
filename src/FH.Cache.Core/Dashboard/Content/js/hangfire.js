@@ -1,11 +1,11 @@
-(function (FH.Cache.Core) {
-    FH.Cache.Core.config = {
-        pollInterval: $("#FH.Cache.CoreConfig").data("pollinterval"),
-        pollUrl: $("#FH.Cache.CoreConfig").data("pollurl"),
+(function (hangfire) {
+    hangfire.config = {
+        pollInterval: $("#hangfireConfig").data("pollinterval"),
+        pollUrl: $("#hangfireConfig").data("pollurl"),
         locale: document.documentElement.lang
     };
 
-    FH.Cache.Core.ErrorAlert = (function () {
+    hangfire.ErrorAlert = (function () {
         function ErrorAlert(title, message) {
             this._errorAlert = $('#errorAlert');
             this._errorAlertTitle = $('#errorAlertTitle');
@@ -14,7 +14,7 @@
             this._message = message;
         }
 
-        ErrorAlert.prototype.show = function() {
+        ErrorAlert.prototype.show = function () {
             this._errorAlertTitle.html(this._title);
             this._errorAlertMessage.html(this._message);
             $('#errorAlert').slideDown('fast');
@@ -23,12 +23,12 @@
         return ErrorAlert;
     })();
 
-    FH.Cache.Core.Metrics = (function() {
+    hangfire.Metrics = (function () {
         function Metrics() {
             this._metrics = {};
         }
 
-        Metrics.prototype.addElement = function(name, element) {
+        Metrics.prototype.addElement = function (name, element) {
             if (!(name in this._metrics)) {
                 this._metrics[name] = [];
             }
@@ -36,7 +36,7 @@
             this._metrics[name].push(element);
         };
 
-        Metrics.prototype.getElements = function(name) {
+        Metrics.prototype.getElements = function (name) {
             if (!(name in this._metrics)) {
                 return [];
             }
@@ -44,7 +44,7 @@
             return this._metrics[name];
         };
 
-        Metrics.prototype.getNames = function() {
+        Metrics.prototype.getNames = function () {
             var result = [];
             var metrics = this._metrics;
 
@@ -60,11 +60,11 @@
         return Metrics;
     })();
 
-    FH.Cache.Core.RealtimeGraph = (function() {
+    hangfire.RealtimeGraph = (function () {
         function RealtimeGraph(element, succeeded, failed, succeededStr, failedStr, pollInterval) {
             this._succeeded = succeeded;
             this._failed = failed;
-            
+
             this._chart = new Chart(element, {
                 type: 'line',
                 data: {
@@ -103,10 +103,10 @@
 
                 this._chart.data.datasets[0].data.push({ x: new Date(), y: succeeded });
                 this._chart.data.datasets[1].data.push({ x: new Date(), y: failed });
-                
+
                 this._chart.update();
             }
-            
+
             this._succeeded = newSucceeded;
             this._failed = newFailed;
         };
@@ -114,7 +114,7 @@
         return RealtimeGraph;
     })();
 
-    FH.Cache.Core.HistoryGraph = (function() {
+    hangfire.HistoryGraph = (function () {
         function HistoryGraph(element, succeeded, failed, succeededStr, failedStr) {
             var timeOptions = $(element).data('period') === 'week'
                 ? { unit: 'day', tooltipFormat: 'LL', displayFormats: { day: 'll' } }
@@ -143,7 +143,7 @@
         return HistoryGraph;
     })();
 
-    FH.Cache.Core.StatisticsPoller = (function() {
+    hangfire.StatisticsPoller = (function () {
         function StatisticsPoller(metricsCallback, statisticsUrl, pollInterval) {
             this._metricsCallback = metricsCallback;
             this._listeners = [];
@@ -155,7 +155,7 @@
         StatisticsPoller.prototype.start = function () {
             var self = this;
 
-            var intervalFunc = function() {
+            var intervalFunc = function () {
                 try {
                     $.post(self._statisticsUrl, { metrics: self._metricsCallback() })
                         .done(function (data) {
@@ -165,14 +165,14 @@
                             }
                         })
                         .fail(function (xhr) {
-                            var errorAlert = new FH.Cache.Core.ErrorAlert(
+                            var errorAlert = new Hangfire.ErrorAlert(
                                 'Unable to refresh the statistics:',
                                 'the server responded with ' + xhr.status + ' (' + xhr.statusText
                                 + '). Try reloading the page manually, or wait for automatic reload that will happen in a minute.');
 
                             errorAlert.show();
                             self._timeoutId = null;
-                            setTimeout(function() { window.location.reload(); }, 60*1000);
+                            setTimeout(function () { window.location.reload(); }, 60 * 1000);
                         });
                 } catch (e) {
                     console.log(e);
@@ -182,21 +182,21 @@
             this._timeoutId = setTimeout(intervalFunc, this._pollInterval);
         };
 
-        StatisticsPoller.prototype.stop = function() {
+        StatisticsPoller.prototype.stop = function () {
             if (this._timeoutId !== null) {
                 clearTimeout(this._timeoutId);
                 this._timeoutId = null;
             }
         };
 
-        StatisticsPoller.prototype.addListener = function(listener) {
+        StatisticsPoller.prototype.addListener = function (listener) {
             this._listeners.push(listener);
         };
 
-        StatisticsPoller.prototype._notifyListeners = function(statistics) {
+        StatisticsPoller.prototype._notifyListeners = function (statistics) {
             var length = this._listeners.length;
             var i;
-            
+
             for (i = 0; i < length; i++) {
                 this._listeners[i](statistics);
             }
@@ -205,12 +205,12 @@
         return StatisticsPoller;
     })();
 
-    FH.Cache.Core.Page = (function() {
+    hangfire.Page = (function () {
         function Page(config) {
-            this._metrics = new FH.Cache.Core.Metrics();
+            this._metrics = new Hangfire.Metrics();
 
             var self = this;
-            this._poller = new FH.Cache.Core.StatisticsPoller(
+            this._poller = new Hangfire.StatisticsPoller(
                 function () { return self._metrics.getNames(); },
                 config.pollUrl,
                 config.pollInterval);
@@ -223,7 +223,7 @@
             this._poller.start();
         };
 
-        Page.prototype._createRealtimeGraph = function(elementId, pollInterval) {
+        Page.prototype._createRealtimeGraph = function (elementId, pollInterval) {
             var realtimeElement = document.getElementById(elementId);
             if (realtimeElement) {
                 var succeeded = parseInt($(realtimeElement).data('succeeded'));
@@ -231,7 +231,7 @@
 
                 var succeededStr = $(realtimeElement).data('succeeded-string');
                 var failedStr = $(realtimeElement).data('failed-string');
-                var realtimeGraph = new FH.Cache.Core.RealtimeGraph(realtimeElement, succeeded, failed, succeededStr, failedStr, pollInterval);
+                var realtimeGraph = new Hangfire.RealtimeGraph(realtimeElement, succeeded, failed, succeededStr, failedStr, pollInterval);
 
                 this._poller.addListener(function (data) {
                     realtimeGraph.appendHistory(data);
@@ -243,7 +243,7 @@
             return null;
         };
 
-        Page.prototype._createHistoryGraph = function(elementId) {
+        Page.prototype._createHistoryGraph = function (elementId) {
             var historyElement = document.getElementById(elementId);
             if (historyElement) {
                 var createSeries = function (obj) {
@@ -264,7 +264,7 @@
                 var succeededStr = $(historyElement).data('succeeded-string');
                 var failedStr = $(historyElement).data('failed-string');
 
-                return new FH.Cache.Core.HistoryGraph(historyElement, succeeded, failed, succeededStr, failedStr);
+                return new Hangfire.HistoryGraph(historyElement, succeeded, failed, succeededStr, failedStr);
             }
 
             return null;
@@ -352,11 +352,11 @@
 
                 if (!confirmText || confirm(confirmText)) {
                     $this.prop('disabled');
-                    var loadingDelay = setTimeout(function() {
+                    var loadingDelay = setTimeout(function () {
                         $this.button('loading');
                     }, 100);
 
-                    $.post($this.data('ajax'), function() {
+                    $.post($this.data('ajax'), function () {
                         clearTimeout(loadingDelay);
                         window.location.reload();
                     });
@@ -373,20 +373,20 @@
                     $expander.text('Fewer details...');
                 }
 
-				$expandable.slideToggle(
-					150, 
-					function() {
-					    if (!$expandable.is(':visible')) {
-					        $expander.text('More details...');
-					    }
-					});
+                $expandable.slideToggle(
+                    150,
+                    function () {
+                        if (!$expandable.is(':visible')) {
+                            $expander.text('More details...');
+                        }
+                    });
                 e.preventDefault();
             });
 
             $('.js-jobs-list').each(function () {
                 var container = this;
 
-                var selectRow = function(row, isSelected) {
+                var selectRow = function (row, isSelected) {
                     var $checkbox = $('.js-jobs-list-checkbox', row);
                     if ($checkbox.length > 0) {
                         $checkbox.prop('checked', isSelected);
@@ -394,7 +394,7 @@
                     }
                 };
 
-                var toggleRowSelection = function(row) {
+                var toggleRowSelection = function (row) {
                     var $checkbox = $('.js-jobs-list-checkbox', row);
                     if ($checkbox.length > 0) {
                         var isSelected = $checkbox.is(':checked');
@@ -406,13 +406,13 @@
                     $('.js-jobs-list-select-all', container)
                         .prop('checked', state === 'all-selected')
                         .prop('indeterminate', state === 'some-selected');
-                    
+
                     $('.js-jobs-list-command', container)
                         .prop('disabled', state === 'none-selected');
                 };
 
-                var updateListState = function() {
-                    var selectedRows = $('.js-jobs-list-checkbox', container).map(function() {
+                var updateListState = function () {
+                    var selectedRows = $('.js-jobs-list-checkbox', container).map(function () {
                         return $(this).prop('checked');
                     }).get();
 
@@ -431,7 +431,7 @@
                     setListState(state);
                 };
 
-                $(this).on('click', '.js-jobs-list-checkbox', function(e) {
+                $(this).on('click', '.js-jobs-list-checkbox', function (e) {
                     selectRow(
                         $(this).closest('.js-jobs-list-row').first(),
                         $(this).is(':checked'));
@@ -448,21 +448,21 @@
                     updateListState();
                 });
 
-                $(this).on('click', '.js-jobs-list-select-all', function() {
+                $(this).on('click', '.js-jobs-list-select-all', function () {
                     var selectRows = $(this).is(':checked');
 
-                    $('.js-jobs-list-row', container).each(function() {
+                    $('.js-jobs-list-row', container).each(function () {
                         selectRow(this, selectRows);
                     });
 
                     updateListState();
                 });
 
-                $(this).on('click', '.js-jobs-list-command', function(e) {
+                $(this).on('click', '.js-jobs-list-command', function (e) {
                     var $this = $(this);
                     var confirmText = $this.data('confirm');
 
-                    var jobs = $("input[name='jobs[]']:checked", container).map(function() {
+                    var jobs = $("input[name='jobs[]']:checked", container).map(function () {
                         return $(this).val();
                     }).get();
 
@@ -487,8 +487,8 @@
 
         return Page;
     })();
-})(window.FH.Cache.Core = window.FH.Cache.Core || {});
+})(window.Hangfire = window.Hangfire || {});
 
 $(function () {
-    FH.Cache.Core.page = new FH.Cache.Core.Page(FH.Cache.Core.config);
+    Hangfire.page = new Hangfire.Page(Hangfire.config);
 });

@@ -13,13 +13,13 @@ namespace FH.Cache.Core.Dashboard
             "moment-with-locales.min.js",
             "Chart.min.js",
             "chartjs-plugin-streaming.min.js",
-            "FH.Cache.Core.js"
+            "hangfire.js"
         };
 
         private static readonly string[] Stylesheets =
         {
             "bootstrap.min.css",
-            "FH.Cache.Core.css"
+            "hangfire.css"
         };
 
         static DashboardRoutes()

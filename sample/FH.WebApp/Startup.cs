@@ -8,6 +8,7 @@ using FH.Cache.Core.InMemory;
 using FH.Cache.Redis;
 using FH.Cache.Redis.L2Cache;
 using FH.Cache.Serialization.MessagePack;
+using FH.Cache.Core;
 
 namespace FH.WebApp
 {
@@ -33,6 +34,9 @@ namespace FH.WebApp
             .AddRedisServices(Configuration)
             .AddRedisL2Services()
             .AddMessagePackServices();
+            services.AddDashboard((provider, configuration) =>
+            {
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -50,7 +54,7 @@ namespace FH.WebApp
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            app.UseHangfireDashboard();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
