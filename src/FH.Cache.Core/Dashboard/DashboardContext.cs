@@ -7,13 +7,15 @@ namespace FH.Cache.Core.Dashboard
     {
         private readonly Lazy<bool> _isReadOnlyLazy;
 
-        protected DashboardContext(DashboardOptions options)
+        protected DashboardContext(DashboardOptions options, IMonitoringApi storage)
         {
           
             if (options == null) throw new ArgumentNullException(nameof(options));
             Options = options;
             _isReadOnlyLazy = new Lazy<bool>(() => options.IsReadOnlyFunc(this));
+            Storage = storage;
         }
+        public IMonitoringApi Storage { get; }
         public DashboardOptions Options { get; }
 
         public Match UriMatch { get; set; }

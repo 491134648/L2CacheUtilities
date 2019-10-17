@@ -19,7 +19,7 @@ using FH.Cache.Core.AspNetCore;
 using FH.Cache.Core.Dashboard;
 using Microsoft.AspNetCore.Http;
 
-namespace Hangfire.Dashboard
+namespace FH.Cache.Core.Dashboard
 {
     public static class AspNetCoreDashboardContextExtensions
     {

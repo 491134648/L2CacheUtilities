@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using FH.Cache.Core.Dashboard;
 using Microsoft.AspNetCore.Http;
 
-namespace Hangfire.Dashboard
+namespace FH.Cache.Core.Dashboard
 {
     internal sealed class AspNetCoreDashboardRequest : DashboardRequest
     {

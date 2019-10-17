@@ -355,7 +355,7 @@ WriteLiteral("</li>\r\n                    <li>");
             #line default
             #line hidden
 WriteLiteral("</li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n        \r\n     " +
-"   <div id=\"FH.Cache.CoreConfig\"\r\n             data-pollinterval=\"");
+"   <div id=\"hangfireConfig\"\r\n             data-pollinterval=\"");
 
 
             

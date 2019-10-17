@@ -1,5 +1,5 @@
 ﻿using FH.Cache.Core.Dashboard;
-using Hangfire.Dashboard;
+using FH.Cache.Core.Dashboard;
 using Microsoft.AspNetCore.Http;
 using System;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +11,9 @@ namespace FH.Cache.Core.AspNetCore
     {
         public AspNetCoreDashboardContext(
             DashboardOptions options,
-            HttpContext httpContext)
-            : base(options)
+            HttpContext httpContext,
+            IMonitoringApi storage)
+            : base(options,storage)
         {
             if (httpContext == null) throw new ArgumentNullException(nameof(httpContext));
 

@@ -27,6 +27,7 @@ namespace FH.Cache.Core
             if (services == null) throw new ArgumentNullException(nameof(services));
             if (configuration == null) throw new ArgumentNullException(nameof(configuration));
             services.TryAddSingleton(_ => DashboardRoutes.Routes);
+            services.TryAddSingleton<IMonitoringApi, DefaultMonitoringApi>();
             services.AddSingleton<IGlobalConfiguration>(serviceProvider =>
             {
                 var configurationInstance = GlobalConfiguration.Configuration;

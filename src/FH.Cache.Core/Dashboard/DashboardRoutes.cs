@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FH.Cache.Core.Dashboard.Pages;
 using FH.Cache.Core.Stats;
 
 namespace FH.Cache.Core.Dashboard
@@ -25,7 +26,7 @@ namespace FH.Cache.Core.Dashboard
         static DashboardRoutes()
         {
             Routes = new RouteCollection();
-            //Routes.AddRazorPage("/", x => new HomePage());
+            Routes.AddRazorPage("/", x => new HomePage());
             Routes.Add("/stats", new JsonStats());
             
             #region Embedded static content
@@ -68,7 +69,9 @@ namespace FH.Cache.Core.Dashboard
                 GetContentResourceName("fonts", "glyphicons-halflings-regular.woff2")));
 
             #endregion
-
+            #region Razor pages and commands
+            Routes.AddRazorPage("/jobs/enqueued", x => new QueuesPage());
+            #endregion
         }
 
         public static RouteCollection Routes { get; }

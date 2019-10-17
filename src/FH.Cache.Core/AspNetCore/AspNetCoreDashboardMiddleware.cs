@@ -13,11 +13,12 @@ namespace FH.Cache.Core.AspNetCore
         private readonly RequestDelegate _next;
         private readonly DashboardOptions _options;
         private readonly RouteCollection _routes;
-
+        private readonly IMonitoringApi _storage;
         public AspNetCoreDashboardMiddleware(
             RequestDelegate next,
             DashboardOptions options,
-            RouteCollection routes)
+            RouteCollection routes,
+            IMonitoringApi storage)
         {
             if (next == null) throw new ArgumentNullException(nameof(next));
             if (options == null) throw new ArgumentNullException(nameof(options));
@@ -25,11 +26,12 @@ namespace FH.Cache.Core.AspNetCore
             _next = next;
             _options = options;
             _routes = routes;
+            _storage = storage;
         }
 
         public async Task Invoke(HttpContext httpContext)
         {
-            var context = new AspNetCoreDashboardContext( _options, httpContext);
+            var context = new AspNetCoreDashboardContext( _options, httpContext,_storage);
             var findResult = _routes.FindDispatcher(httpContext.Request.Path.Value);
 
             if (findResult == null)

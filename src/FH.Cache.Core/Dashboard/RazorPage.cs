@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FH.Cache.Core.Dashboard
 {
@@ -23,7 +24,7 @@ namespace FH.Cache.Core.Dashboard
         public HtmlHelper Html { get; private set; }
         public UrlHelper Url { get; private set; }
 
-    
+        public IMonitoringApi Storage => Context.Storage;
         public string AppPath => Context.Options.AppPath;
         public DashboardOptions DashboardOptions => Context.Options;
         public Stopwatch GenerationTime { get; private set; }
@@ -38,7 +39,6 @@ namespace FH.Cache.Core.Dashboard
         }
 
         internal DashboardContext Context { get; private set; }
-
         internal DashboardRequest Request => Context.Request;
         internal DashboardResponse Response => Context.Response;
 
