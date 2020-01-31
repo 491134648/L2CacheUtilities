@@ -28,6 +28,6 @@
     <ProjectReference Include="..\FH.Cache.Core\FH.Cache.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MessagePack" Version="1.7.3.4" />
+    <PackageReference Include="MessagePack" Version="1.9.3" />
   </ItemGroup>
 </Project>
